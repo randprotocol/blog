@@ -99,17 +99,19 @@
     }
 
     :not(.katex-display) > .katex {
-      @apply max-w-full inline-block align-middle overflow-x-auto overflow-y-hidden;
+      @apply inline-block max-w-full overflow-x-auto overflow-y-hidden align-middle;
     }
   }
 
   /* ===== Code Blocks & Syntax Highlighting ===== */
+  /* Shiki emits both themes as variables. The token colours follow the theme;
+     the block itself sits on the surface colour rather than Shiki's own. */
   .astro-code {
-    @apply flex border bg-(--shiki-light-bg) text-(--shiki-light) outline-border [&_span]:text-(--shiki-light);
+    @apply flex border bg-surface text-(--shiki-dark) outline-border [&_span]:text-(--shiki-dark);
   }
 
-  html[data-theme="dark"] .astro-code {
-    @apply bg-(--shiki-dark-bg) text-(--shiki-dark) [&_span]:text-(--shiki-dark);
+  html[data-theme="light"] .astro-code {
+    @apply text-(--shiki-light) [&_span]:text-(--shiki-light);
   }
 
   /* Styles for Shiki transformers */

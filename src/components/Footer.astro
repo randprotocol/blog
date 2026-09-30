@@ -24,9 +24,11 @@ const { noMarginTop = false, class: className, ...attrs } = Astro.props;
   >
     <Socials />
     <div class="my-2 flex flex-col items-center whitespace-nowrap sm:flex-row">
-      <span>Copyright &#169; {currentYear}</span>
+      <span>&#169; {currentYear} Randprotocol Development LLC</span>
       <span class="hidden sm:inline">&nbsp;|&nbsp;</span>
-      <span>All rights reserved.</span>
+      <a href="https://randprotocol.org/" class="hover:text-accent"
+        >randprotocol.org</a
+      >
     </div>
   </div>
 </footer>

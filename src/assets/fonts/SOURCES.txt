@@ -1,0 +1,21 @@
+Self-hosted fonts, copied unchanged from randprotocol.org (public/fonts), so the blog
+loads no network fonts and reads as part of the main site.
+
+Inter-Variable.woff2
+  Inter v4.1 — https://github.com/rsms/inter/releases/download/v4.1/Inter-4.1.zip
+  (`web/InterVariable.woff2` in that archive). Body text.
+  Licence: Inter-OFL.txt (SIL Open Font License 1.1).
+
+JetBrainsMono-Variable.woff2
+  JetBrains Mono v2.304 —
+  https://github.com/JetBrains/JetBrainsMono/releases/download/v2.304/JetBrainsMono-2.304.zip
+  (the variable TrueType face repackaged as woff2, no subsetting). Code.
+  Licence: JetBrainsMono-OFL.txt (SIL Open Font License 1.1).
+
+DepartureMono-Regular.woff2
+  Departure Mono v1.500 (Helena Zhang) —
+  https://github.com/rektdeckard/departure-mono/releases/download/v1.500/DepartureMono-1.500.zip
+  A pixel face on an 11 px grid, used for the wordmark only.
+  Licence: DepartureMono-OFL.txt (SIL Open Font License 1.1).
+
+The faces are declared in src/styles/global.css; Vite hashes them into _astro/.

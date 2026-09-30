@@ -81,8 +81,7 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
           <h2 class="text-2xl font-semibold tracking-wide">Newest</h2>
           <ul>
             {recentPosts.map(
-              (data, index) =>
-                index < 3 && <Card variant="h3" {...data} />
+              (data, index) => index < 3 && <Card variant="h3" {...data} />
             )}
           </ul>
         </section>

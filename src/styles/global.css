@@ -1,42 +1,99 @@
 @import "tailwindcss";
 @import "./typography.css";
 
-@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+/* ---------------------------------------------------------------------------
+   Rand Protocol Blog — AstroPaper, reskinned with randprotocol.org's tokens.
 
-:root,
-html[data-theme="light"] {
-  --background: #fdfdfd;
-  --foreground: #282728;
-  --accent: #006cac;
-  --muted: #e6e6e6;
-  --border: #ece9e9;
+   The colours are the main site's (randprotocol.org src/styles/global.css,
+   from the wallet's design/tokens.json with the site's cobalt accent). Dark
+   (ink) is the default, as on the main site; light (paper) is a full theme
+   under html[data-theme="light"]. Both sites keep the choice in
+   localStorage["theme"] on the same origin, so it carries across.
+
+   Type is Inter for text, JetBrains Mono for code, and Departure Mono for the
+   wordmark only. The fonts are self-hosted (src/assets/fonts/SOURCES.txt).
+   --------------------------------------------------------------------------- */
+
+/* Dark unless the document says light, so the page is right before (and
+   without) the theme script. */
+@custom-variant dark (&:where(html:not([data-theme=light]), html:not([data-theme=light]) *));
+
+@font-face {
+  font-family: "Inter var";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("../assets/fonts/Inter-Variable.woff2") format("woff2");
+}
+@font-face {
+  font-family: "JetBrains Mono var";
+  font-style: normal;
+  font-weight: 100 800;
+  font-display: swap;
+  src: url("../assets/fonts/JetBrainsMono-Variable.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Departure Mono";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("../assets/fonts/DepartureMono-Regular.woff2") format("woff2");
 }
 
-html[data-theme="dark"] {
-  --background: #212737;
-  --foreground: #eaedf3;
-  --accent: #ff6b01;
-  --muted: #343f60;
-  --border: #ab4b08;
+/* Dark (ink) — the default. */
+:root {
+  color-scheme: dark;
+  --background: #0e1220;
+  --foreground: #ece9e2;
+  --accent: #5b8def;
+  --muted: #1e2538;
+  --border: #2b3350;
+  --surface: #161c2c;
+}
+
+/* Light (paper). */
+html[data-theme="light"] {
+  color-scheme: light;
+  --background: #f2f3f7;
+  --foreground: #121521;
+  --accent: #1e4fbf;
+  --muted: #e6e8ef;
+  --border: #d9dce6;
+  --surface: #ffffff;
+}
+
+@theme {
+  --font-sans:
+    "Inter var", "Inter", -apple-system, BlinkMacSystemFont, "SF Pro Text",
+    "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono:
+    "JetBrains Mono var", "JetBrains Mono", ui-monospace, "SF Mono", Menlo,
+    Consolas, "Roboto Mono", monospace;
+  --font-display:
+    "Departure Mono", "JetBrains Mono var", "JetBrains Mono", ui-monospace,
+    "SF Mono", Menlo, Consolas, monospace;
 }
 
 @theme inline {
-  --font-app: var(--font-google-sans-code);
+  --font-app: var(--font-sans);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-accent: var(--accent);
   --color-muted: var(--muted);
   --color-border: var(--border);
+  --color-surface: var(--surface);
 }
 
 @layer base {
   * {
     @apply border-border outline-accent/75;
     scrollbar-width: auto;
-    scrollbar-color: var(--color-muted) transparent;
+    scrollbar-color: var(--color-border) transparent;
   }
   html {
     @apply overflow-y-scroll scroll-smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
   body {
     @apply flex min-h-svh flex-col bg-background font-app text-foreground selection:bg-accent/75 selection:text-background;
@@ -48,6 +105,12 @@ html[data-theme="dark"] {
   button:not(:disabled),
   [role="button"]:not(:disabled) {
     cursor: pointer;
+  }
+  code,
+  pre,
+  kbd,
+  samp {
+    font-variant-ligatures: none;
   }
 }
 
@@ -61,6 +124,40 @@ html[data-theme="dark"] {
 
 .active-nav {
   @apply underline decoration-wavy decoration-2 underline-offset-8;
+}
+
+/* ---- The brand: the entropy mark and the pixel wordmark (randprotocol.org) ----
+   The mark is one tile of the wallet's entropy field: grain pixels in the text
+   colour, one in the accent. Drawn at 22 px, two of the pixel face's 11 px units. */
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+.brand .mark {
+  width: 22px;
+  height: 22px;
+  flex: none;
+  fill: var(--foreground);
+}
+.brand .mark .hot {
+  fill: var(--accent);
+}
+.brand .name {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: 0;
+  white-space: nowrap;
+}
+.brand .section {
+  font-size: 0.9375rem;
+  font-weight: 500;
+  line-height: 1;
+  opacity: 0.7;
+  padding-inline-start: 10px;
+  border-inline-start: 1px solid var(--border);
 }
 
 /* Source: https://piccalil.li/blog/a-more-modern-css-reset/ */

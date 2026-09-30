@@ -4,8 +4,9 @@ const LIGHT = "light";
 const DARK = "dark";
 
 // Initial color scheme
-// Can be "light", "dark", or empty string for system's prefers-color-scheme
-const initialColorScheme = "";
+// Can be "light", "dark", or empty string for system's prefers-color-scheme.
+// Dark, as on randprotocol.org; keep in step with the inline script in Layout.astro.
+const initialColorScheme = "dark";
 
 function getPreferTheme(): string {
   // get theme data from local storage (user's explicit choice)
@@ -103,12 +104,3 @@ document.addEventListener("astro:before-swap", event => {
       ?.setAttribute("content", bgColor);
   }
 });
-
-// sync with system changes
-window
-  .matchMedia("(prefers-color-scheme: dark)")
-  .addEventListener("change", ({ matches: isDark }) => {
-    themeValue = isDark ? DARK : LIGHT;
-    window.theme?.setTheme(themeValue);
-    setPreference();
-  });
