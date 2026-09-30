@@ -90,8 +90,10 @@
       @apply focus-visible:border-transparent focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-dashed;
     }
 
+    /* Displayed math is a bare span under the article, not inside a <p>, so it
+       needs the text colour said here or it takes the prose default grey. */
     .katex-display {
-      @apply max-w-full overflow-x-auto overflow-y-hidden py-1;
+      @apply max-w-full overflow-x-auto overflow-y-hidden py-1 text-foreground;
     }
 
     .katex-display > .katex {

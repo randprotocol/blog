@@ -21,9 +21,17 @@ const { page } = Astro.props;
 <Layout title={`Posts | ${SITE.title}`}>
   <Header />
   <Main pageTitle="Posts" pageDesc="All the posts, newest first.">
-    <ul>
-      {page.data.map(data => <Card {...data} />)}
-    </ul>
+    {
+      page.data.length === 0 ? (
+        <p class="opacity-80">No posts yet.</p>
+      ) : (
+        <ul>
+          {page.data.map(data => (
+            <Card {...data} />
+          ))}
+        </ul>
+      )
+    }
   </Main>
 
   <Pagination {page} />

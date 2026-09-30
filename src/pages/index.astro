@@ -89,6 +89,14 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
       )
     }
 
+    {
+      sortedPosts.length === 0 && (
+        <section id="no-posts" class="pt-12 pb-6">
+          <p class="opacity-80">No posts yet.</p>
+        </section>
+      )
+    }
+
     <div class="my-8 text-center">
       <LinkButton href={withBase("/posts/")}>
         All Posts

@@ -4,8 +4,14 @@ import Main from "@/layouts/Main.astro";
 import Layout from "@/layouts/Layout.astro";
 import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
+import { getCollection } from "astro:content";
+import getSortedPosts from "@/utils/getSortedPosts";
 import { SITE } from "@/config";
 import { withBase } from "@/utils/withBase";
+
+// With no posts there is nothing to search, and Pagefind would fall back to
+// indexing the site's own pages; say so instead of mounting the search box.
+const hasPosts = getSortedPosts(await getCollection("blog")).length > 0;
 
 const backUrl = SITE.showBackButton ? `${Astro.url.pathname}` : withBase("/");
 ---
@@ -13,7 +19,13 @@ const backUrl = SITE.showBackButton ? `${Astro.url.pathname}` : withBase("/");
 <Layout title={`Search | ${SITE.title}`}>
   <Header />
   <Main pageTitle="Search" pageDesc="Search the posts.">
-    <div id="pagefind-search" transition:persist data-backurl={backUrl}></div>
+    {
+      hasPosts ? (
+        <div id="pagefind-search" transition:persist data-backurl={backUrl} />
+      ) : (
+        <p class="opacity-80">No posts yet, so there is nothing to search.</p>
+      )
+    }
   </Main>
   <Footer />
 </Layout>
