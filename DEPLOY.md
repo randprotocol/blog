@@ -15,7 +15,7 @@ host that is already served.
 | URL          | `https://randprotocol.org/blog/`                                  |
 | Droplet      | the main site's; its address is `$RANDPROTOCOL_DROPLET_IP`        |
 | Files        | `/var/www/randprotocol-blog/blog/`, owned by `deploy`             |
-| nginx        | `location ^~ /blog/` in `/etc/nginx/sites-available/randprotocol` |
+| nginx        | `location ^~ /blog/` in `/etc/nginx/sites-enabled/randprotocol` — **a plain file, not a symlink**: on the droplet `sites-enabled/randprotocol` is the live vhost and `sites-available/randprotocol` is a stale copy (found 2026-10-01) |
 | Deploy       | `./deploy.sh` (`pnpm build`, then `rsync -a --delete`)            |
 | Needs reload | only the one-time nginx change; never a deploy                    |
 
@@ -210,3 +210,11 @@ gets one.
 The deploy is a copy of `dist/`. To go back, check out the commit that was live and run
 `./deploy.sh` again. To take the blog down, remove the two location blocks from the
 vhost and reload nginx; `/blog/` then answers 404 from the main site, as it did before.
+
+## Record
+
+- 2026-10-01: the location blocks were added to `/etc/nginx/sites-enabled/randprotocol` (the live
+  file; a first attempt on `sites-available/` changed nothing because the enabled vhost is a
+  copy, not a link), backups in `/root/randprotocol.enabled.bak-*`, and the first post deployed.
+  `https://randprotocol.org/blog/` 200, the post 200, `/blog` 301, an unknown path 404, the main
+  site untouched.
