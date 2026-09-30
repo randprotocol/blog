@@ -5,8 +5,9 @@ import Layout from "@/layouts/Layout.astro";
 import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
 import { SITE } from "@/config";
+import { withBase } from "@/utils/withBase";
 
-const backUrl = SITE.showBackButton ? `${Astro.url.pathname}` : "/";
+const backUrl = SITE.showBackButton ? `${Astro.url.pathname}` : withBase("/");
 ---
 
 <Layout title={`Search | ${SITE.title}`}>
@@ -43,8 +44,15 @@ const backUrl = SITE.showBackButton ? `${Astro.url.pathname}` : "/";
       }
 
       // Init pagefind ui
+      // The site lives under a base ("/blog/"): the index is at
+      // <base>pagefind/, and the result URLs, which Pagefind records relative
+      // to dist/, need the base put back in front.
+      const base = import.meta.env.BASE_URL.replace(/\/*$/, "/");
+
       const search = new PagefindUI({
         element: "#pagefind-search",
+        bundlePath: `${base}pagefind/`,
+        baseUrl: base,
         showImages: false,
         showSubResults: true,
         processTerm: function (term: string) {

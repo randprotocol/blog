@@ -13,12 +13,19 @@ import {
 import { transformerFileName } from "./src/utils/transformers/fileName";
 import { SITE } from "./src/config";
 
+// The blog is served under a sub-path of the main site. SITE.website is the
+// one place that says where ("https://randprotocol.org/blog/"); `site` and
+// `base` are its two halves, so canonical URLs, the sitemap, the feed and the
+// bundled assets all land under the base.
+const website = new URL(SITE.website);
+
 // https://astro.build/config
 export default defineConfig({
-  site: SITE.website,
+  site: website.origin,
+  base: website.pathname.replace(/\/+$/, "") || "/",
   integrations: [
     sitemap({
-      filter: page => SITE.showArchives || !page.endsWith("/archives"),
+      filter: page => SITE.showArchives || !/\/archives\/?$/.test(page),
     }),
   ],
   markdown: {
@@ -48,6 +55,12 @@ export default defineConfig({
     // This will be fixed in Astro 6 with Vite 7 support
     // See: https://github.com/withastro/astro/issues/14030
     plugins: [tailwindcss()],
+    build: {
+      // Never inline a small asset as a data: URI (Vite's default does so
+      // under 4 kB, which catches one KaTeX font): every font stays a file
+      // under _astro/, so a `font-src 'self'` policy is enough.
+      assetsInlineLimit: 0,
+    },
     optimizeDeps: {
       exclude: ["@resvg/resvg-js"],
     },

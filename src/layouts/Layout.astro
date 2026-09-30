@@ -2,6 +2,7 @@
 import { ClientRouter } from "astro:transitions";
 import { PUBLIC_GOOGLE_SITE_VERIFICATION } from "astro:env/client";
 import { SITE } from "@/config";
+import { withBase, withTrailingSlash } from "@/utils/withBase";
 import "@/styles/global.css";
 import interUrl from "@/assets/fonts/Inter-Variable.woff2?url";
 import departureMonoUrl from "@/assets/fonts/DepartureMono-Regular.woff2?url";
@@ -23,8 +24,10 @@ const {
   author = SITE.author,
   profile = SITE.profile,
   description = SITE.desc,
-  ogImage = SITE.ogImage ? `/${SITE.ogImage}` : "/og.png",
-  canonicalURL = new URL(Astro.url.pathname, Astro.url),
+  ogImage = withBase(SITE.ogImage ? `/${SITE.ogImage}` : "/og.png"),
+  // Pages are served at their trailing-slash URL; the home page's pathname is
+  // the bare base ("/blog"), so the slash is put on here.
+  canonicalURL = new URL(withTrailingSlash(Astro.url.pathname), Astro.url),
   pubDatetime,
   modDatetime,
   scrollSmooth = false,
@@ -61,8 +64,12 @@ const structuredData = {
     <meta name="color-scheme" content="dark light" />
     <!-- The favicon is the Rand mark, as on randprotocol.org; the touch icon
          is the mark on the ink tile, since iOS needs it opaque. -->
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="apple-touch-icon" sizes="180x180" href="/icon-180.png" />
+    <link rel="icon" type="image/svg+xml" href={withBase("/favicon.svg")} />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href={withBase("/icon-180.png")}
+    />
     <link rel="canonical" href={canonicalURL} />
     <meta name="generator" content={Astro.generator} />
 
@@ -83,18 +90,12 @@ const structuredData = {
       crossorigin
     />
 
-    <!-- KaTeX -->
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css"
-    />
-
     <!-- General Meta Tags -->
     <title>{title}</title>
     <meta name="title" content={title} />
     <meta name="description" content={description} />
     <meta name="author" content={author} />
-    <link rel="sitemap" href="/sitemap-index.xml" />
+    <link rel="sitemap" href={withBase("/sitemap-index.xml")} />
 
     <!-- Open Graph / Facebook -->
     <meta property="og:title" content={title} />
@@ -140,7 +141,7 @@ const structuredData = {
       rel="alternate"
       type="application/rss+xml"
       title={SITE.title}
-      href={new URL("rss.xml", Astro.site)}
+      href={new URL(withBase("/rss.xml"), Astro.site)}
     />
 
     <meta name="theme-color" content="#0e1220" />

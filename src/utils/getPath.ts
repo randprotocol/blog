@@ -1,8 +1,10 @@
 import { BLOG_PATH } from "@/content.config";
 import { slugifyStr } from "./slugify";
+import { withBase } from "./withBase";
 
 /**
- * Get full path of a blog post
+ * Get the route of a blog post, relative to the site's base: "/posts/<slug>".
+ * For a link, use `getPostUrl`, which adds the base and the trailing slash.
  * @param id - id of the blog post (aka slug)
  * @param filePath - the blog post full file location
  * @param includeBase - whether to include `/posts` in return value
@@ -33,4 +35,14 @@ export function getPath(
   }
 
   return [basePath, ...pathSegments, slug].join("/");
+}
+
+/**
+ * Get the URL path of a blog post as a link needs it: with the site's base
+ * and a trailing slash, e.g. "/blog/posts/<slug>/".
+ * @param id - id of the blog post (aka slug)
+ * @param filePath - the blog post full file location
+ */
+export function getPostUrl(id: string, filePath: string | undefined) {
+  return withBase(`${getPath(id, filePath)}/`);
 }

@@ -9,8 +9,9 @@ import getPostsByGroupCondition from "@/utils/getPostsByGroupCondition";
 import { SITE } from "@/config";
 
 // Redirect to 404 page if `showArchives` config is false
+// (the 404 page sits under the deploy base, like every other page)
 if (!SITE.showArchives) {
-  return Astro.redirect("/404");
+  return Astro.redirect(`${import.meta.env.BASE_URL.replace(/\/+$/, "")}/404`);
 }
 
 const posts = await getCollection("blog", ({ data }) => !data.draft);
