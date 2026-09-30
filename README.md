@@ -18,8 +18,13 @@ feed, a sitemap and a generated social image for every post.
    with a file name, and a table.
 4. `pnpm dev` to read it locally, `pnpm build` to check it.
 
-A post with `draft: true`, or a `pubDatetime` more than 15 minutes in the
-future, is left out of the build.
+A post with `draft: true` is left out of the build. A post whose `pubDatetime`
+is more than 15 minutes in the future stays off the index, the tag pages, the
+archive and the feed until that time has passed and the site is rebuilt, but its
+page is built at its URL, so the date does not keep a post private.
+
+Link to another post as `/blog/posts/<slug>/`. A link that starts with `/` is
+resolved against randprotocol.org, so `/docs` is the main site's documentation.
 
 ## Commands
 
@@ -36,10 +41,23 @@ future, is left out of the build.
 The build fetches Inter from Google Fonts to draw the social images, so it needs
 network access. Search only works after a build, because Pagefind indexes `dist/`.
 
+## Deploying
+
+`./deploy.sh` builds the site and rsyncs `dist/` to the randprotocol.org
+droplet; it needs `RANDPROTOCOL_DROPLET_IP` in the environment. nginx serves the
+files at `/blog/` through the location blocks in `server/nginx-blog.conf`, which
+are added to the vhost once. [`DEPLOY.md`](DEPLOY.md) has the one-time setup, the
+deploy, the checks to run afterwards and the Content-Security-Policy notes.
+
 ## Layout
 
 ```text
 /
+├── deploy.sh               build and rsync to the droplet
+├── DEPLOY.md               how the blog is served and deployed
+├── server/
+│   ├── nginx-blog.conf     the /blog/ location blocks for the vhost
+│   └── csp-blog.sh         prints the CSP that fits the built site
 ├── public/                 favicon.svg, icon-180.png (copied as they are)
 ├── src/
 │   ├── assets/
@@ -62,6 +80,11 @@ network access. Search only works after a build, because Pagefind indexes `dist/
 
 `src/config.ts` holds the site's title, description, canonical URL
 (`https://randprotocol.org/blog/`), default author and time zone (UTC).
+
+The site is served under a sub-path. `astro.config.ts` takes `site` and `base`
+(`/blog`) from `SITE.website`, and components build internal links with
+`withBase()` from `src/utils/withBase.ts`; a link written as a bare `/posts/`
+in a component would point at the main site.
 
 `PUBLIC_GOOGLE_SITE_VERIFICATION` is optional. When it is set in the build
 environment, the pages carry a `google-site-verification` meta tag.
