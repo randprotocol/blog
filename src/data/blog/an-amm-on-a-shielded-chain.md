@@ -1,7 +1,7 @@
 ---
 title: "An AMM on a shielded chain"
 description: "How durian.market puts a constant-product market maker on Rand Protocol, where programs had no state and no way to hold a token: what RPL-2 adds to the ledger, how a swap becomes one proof over one declared transition, what is public and what is not, and what the design costs."
-pubDatetime: 2026-10-01T09:00:00Z
+pubDatetime: 2026-10-01T03:00:00Z
 author: "Dendi Suhubdy"
 tags:
   - engineering
