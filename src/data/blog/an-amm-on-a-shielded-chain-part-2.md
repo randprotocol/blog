@@ -43,8 +43,8 @@ Under the page are three proofs. The **call proof** shows the AMM program accept
 transition; the device makes it, because it runs over the private method inputs. The **auth
 proof** shows the spend key authorised the bundle; the device makes it too, so the key never
 leaves. The **bundle proof** — the large one, over the notes being spent — goes to a prover,
-which receives only a viewing key's worth of information. On a single CPU core the three take
-54, 13 and 207 seconds.
+which receives only a viewing key's worth of information. With the v0.6.8 prover, on an M4
+laptop, the call proof takes about 6 seconds and the bundle about 20.
 
 ## From a branch to `main`
 
@@ -79,9 +79,9 @@ None of these were in the design. All of them were found by running it.
 
 A Rand bundle carries a `time`: the height of the anchor it was built on. A node refuses a bundle
 whose `time` is too far behind the tip — 256 blocks, a constant. On the devnet, at one block a
-second, that was about four minutes. The first pool-creation invoke took 54 seconds for the call
-proof, 13 for the auth and 207 for the bundle, proved one after another on one core, and the node
-answered:
+second, that was about four minutes. The first pool-creation invoke, proved on a cloud machine with
+the pre-rebase build — 54 seconds for the call proof, 13 for the auth and 207 for the bundle, one
+after another — arrived too late, and the node answered:
 
 ```
 Error: time 789 is outside [816, 1072] (rpc -32000)
