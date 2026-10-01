@@ -217,3 +217,5 @@ The larger point is not the exchange. It is that a chain whose validators only v
 still carry shared public state, as long as the person who wants to change it is the one who
 proves the change — and that the ledger can be made to check that proof without ever handing the
 prover its own state.
+
+*Continued in [Part 2](/blog/posts/an-amm-on-a-shielded-chain-part-2/): RPL-2 on the live testnet and the first swap from a browser wallet.*
